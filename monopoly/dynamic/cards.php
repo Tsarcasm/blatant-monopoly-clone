@@ -2,8 +2,37 @@
 include_once "../includes/top.php";
 include_once "../includes/sql.php";
 $pk = $_GET["pk"];
-$cards = getCards($conn, $pk);
 
+function getCards($conn, $session)
+{
+    $cards = array();
+    $stmt = $conn->prepare("
+        SELECT player_cards.pk, properties.name, properties.details, player_cards.mortgaged, player_cards.houses, streets.name, streets.color
+        FROM properties
+        INNER JOIN player_cards ON player_cards.property_pk = properties.pk
+        INNER JOIN players ON players.pk = player_cards.player_pk
+        INNER JOIN streets ON streets.pk = properties.street_pk
+        WHERE players.session_id = ?
+    ");
+    $stmt->bind_param("s", $session);
+    if ($stmt->execute()) {
+        $stmt->bind_result($pk, $name, $details, $mortgaged, $houses, $street_name, $color);
+        while ($stmt->fetch()) {
+            array_push($cards, array(
+                "pk" => $pk,
+                "name" => $name,
+                "details" => $details,
+                "mortgaged" => $mortgaged,
+                "houses" => $houses,
+                "street_name" => $street_name,
+                "color" => $color,
+            ));
+        }
+        return $cards;
+    }
+}
+
+$cards = getCards($conn, $pk);
 echo "<div>";
 foreach ($cards as $card) {
     echo "
