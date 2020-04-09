@@ -1,0 +1,113 @@
+body {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    /* font-family: 'Courier New', Courier, monospace; */
+    cursor: url('images/cursor.png'), auto !important;
+    /* background-image: url("images/toast.png"); */
+    background-repeat: repeat;
+}
+
+body::after {
+    content: "";
+    background: url('images/toast.png');
+    background-repeat: repeat;
+    opacity: 0.4;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+@media only screen and (max-width: 1200px) {
+    body {
+        font-size: 17px;
+    }
+}
+
+a {
+    cursor: url('images/cursor-burn.png'), auto !important;
+}
+
+@media only screen and (min-width: 1200px) {
+    .page-wrap {
+        width: 1150px;
+    }
+}
+
+.page-wrap {
+    margin: 0px auto;
+}
+
+.page {
+    background: rgba(255, 255, 255, 0.87);
+    /* cursor: url('images/toast.png'), auto !important; */
+}
+
+.title {
+    border-bottom: 2px black solid;
+}
+
+.title h1 {
+    margin: 0px;
+    padding: 10px;
+    text-align: center;
+}
+
+.nav {
+    text-align: center;
+}
+
+.nav a {
+    font-size: 18px;
+}
+
+.nav a:visited {
+    color: blue;
+}
+
+.nav a:hover {
+    text-decoration-style: dashed;
+    color: black;
+}
+
+@media only screen and (max-width: 1200px) {
+    .nav a:after {
+        content: '\a';
+        white-space: pre;
+    }
+    .nav a:last-of-type:after {
+        content: '';
+    }
+}
+
+.content {
+    padding: 10px;
+    min-height: 300px;
+}
+
+.content h1 {
+    font-size: 24px;
+    margin: 0px, 5px;
+    color: #ff704f;
+    /* text-decoration: underline; */
+}
+
+.content h2 {
+    font-size: 20px;
+    margin: 0px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .content h1 {
+        font-size: 20px;
+    }
+    .content h2 {
+        font-size: 18px;
+    }
+}
+
+.footer {
+    margin-top: 40px;
+    text-align: right;
+}
