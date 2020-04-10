@@ -179,7 +179,7 @@ function giveCard($conn, $player_pk, $card_pk)
 {
     $stmt = $conn->prepare("
         INSERT INTO player_cards (player_pk, property_pk)
-        VAULES (?, ?)
+        VALUES (?, ?)
     ");
     $stmt->bind_param("ii", $player_pk, $card_pk);
     return $stmt->execute();
@@ -189,7 +189,7 @@ function takeCard($conn, $player_pk, $card_pk)
 {
     $stmt = $conn->prepare("
         DELETE FROM player_cards
-        WHERE player_pk = ? AND card_pk = ?
+        WHERE player_pk = ? AND property_pk = ?
     ");
     $stmt->bind_param("ii", $player_pk, $card_pk);
     return $stmt->execute();

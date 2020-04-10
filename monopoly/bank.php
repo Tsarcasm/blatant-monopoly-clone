@@ -10,6 +10,17 @@ include_once "includes/sql.php"
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 </head>
 <body>
+
+    <div id="property-modal" class="modal">
+        <div class="modal-content">
+            <h1>Choose a property <span id="close-property-modal-btn" class="close-modal-btn">[×]</span></h1>
+            <hr>
+            <div id="property-options">
+                Loading...
+            </div>
+        </div>
+    </div>
+
     <div class="bank-table">
         <div class="header">
             <h1>Bank Page</h1>
@@ -59,17 +70,32 @@ include_once "includes/sql.php"
             <button id="mortgage-btn" class="requires-selected-card">Mortgage</button>
         </div>
         <div class="button unmort">
-            <h2>Mortgage a property</h2>
+            <h2>Unmortgage a property</h2>
             <button id="unmortgage-btn" class="requires-selected-card">Unmortgage</button>
         </div>
 
+        <div class="button give-prop">
+            <h2>Give a property</h2>
+            <button id="give-prop-btn" class="requires-selected-player">Give</button>
+        </div>
+
+        <div class="button take-prop">
+            <h2>Take a property</h2>
+            <button id="take-prop-btn" class="requires-selected-player">Take</button>
+
+        </div>
+
+        <div class="props">
+            Cards
+        </div>
     </div>
 
 
     <script>
         let selectedPlayer;
         let selectedCard;
-        $("input.requires-selected-player").prop('disabled', true);
+        let propertySelectMode;
+        $(".requires-selected-player").prop('disabled', true);
         $(".requires-selected-card").prop('disabled', true);
         $('#players').load('dynamic/players.php?');
 
@@ -83,6 +109,86 @@ include_once "includes/sql.php"
             }
         });
 
+
+        $("#give-prop-btn").on("click", function() {
+            propertySelectMode = "give-prop";
+            $("#property-options").load("dynamic/unowned_properties.php");
+            openPropertyModal();
+        });
+
+        $("#take-prop-btn").on("click", function() {
+            propertySelectMode = "take-prop";
+            $("#property-options").load("dynamic/owned_properties.php?pk="+selectedPlayer.data("pk"));
+            openPropertyModal();
+        });
+
+
+        $("#close-property-modal-btn").on("click", function() {
+            closePropertyModal();
+        });
+
+        function openPropertyModal() {
+            $(".modal").show();
+        }
+
+        function closePropertyModal() {
+            propertySelectMode = "none";
+            $(".modal").hide();
+            $("#property-options").html("Loading...");
+        }
+
+        $("#property-options").on("click", ".property-modal-card", function(e) {
+            let property_pk = $(e.target).closest("div.property-modal-card").data("pk")
+            if (propertySelectMode == "give-prop") {
+                //We want to give this player that property
+                $.ajax({
+                type: "POST",
+                url: "api/give_property.php",
+                data: {
+                    "player_pk": selectedPlayer.data("pk"),
+                    "property_pk" : property_pk
+                },
+                success: function(e) {
+                    console.log(e);
+                    closePropertyModal();
+                    delselectPlayer();
+                }});
+            } else if (propertySelectMode == "take-prop") {
+
+            } //We want to give this player that property
+                $.ajax({
+                type: "POST",
+                url: "api/take_property.php",
+                data: {
+                    "player_pk": selectedPlayer.data("pk"),
+                    "property_pk" : property_pk
+                },
+                success: function(e) {
+                    console.log(e);
+                    closePropertyModal();
+                    delselectPlayer();
+                }});
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         function reload() {
             $('#players').load('dynamic/players.php');
             delselectPlayer();
@@ -90,7 +196,7 @@ include_once "includes/sql.php"
         function delselectPlayer() {
             if (selectedPlayer) selectedPlayer.removeClass("selected");
             selectedPlayer = null;
-            $("input.requires-selected-player").prop('disabled', true);
+            $(".requires-selected-player").prop('disabled', true);
             deselectCard();
             $('#selected-player-cards').html("");
         }
@@ -101,7 +207,7 @@ include_once "includes/sql.php"
             if (selectedPlayer) selectedPlayer.removeClass("selected");
             e.addClass("selected");
             selectedPlayer = e;
-            $("input.requires-selected-player").prop('disabled', false);
+            $(".requires-selected-player").prop('disabled', false);
             $('#selected-player-cards').load('dynamic/cards.php?pk=' + selectedPlayer.data("pk"));
         }
 
