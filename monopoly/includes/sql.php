@@ -1,19 +1,59 @@
 <?php
 
-function getPlayerWithSession($conn, $session)
+function isAdminSession($conn, $session_code)
+{
+    return isAdminPlayer($conn, getPlayerWithSession($conn, $session_code));
+}
+
+
+function isAdminPlayer($conn, $player)
+{
+    $admin_pk = getGame($conn, $player["game_pk"])["admin_pk"];
+    return ($admin_pk == $player["pk"]);
+}
+
+function getGameForPlayer($conn, $player_pk)
+{
+    $player = getPlayer($conn, $player_pk);
+    return getGame($conn, $player["game"]);
+}
+
+function getGame($conn, $game_pk)
 {
     $stmt = $conn->prepare("
-        SELECT pk, username, token, balance, jail_cards
-        FROM players
-        WHERE session_id = ?
+        SELECT admin_pk, code
+        FROM games
+        WHERE pk = ?
     ");
-    $stmt->bind_param("s", $session);
+    $stmt->bind_param("i", $game_pk);
     if ($stmt->execute()) {
-        $stmt->bind_result($pk, $username, $token, $balance, $jail_cards);
+        $stmt->bind_result($admin_pk, $code);
+        if ($stmt->fetch()) {
+            return array(
+                "pk" => $game_pk,
+                "admin_pk" => $admin_pk,
+                "code" => $code,
+            );
+        }
+    }
+}
+
+function getPlayerWithSession($conn, $session_code)
+{
+    $stmt = $conn->prepare("
+        SELECT players.pk, players.game_pk, players.username, players.token, players.balance, players.jail_cards
+        FROM players
+        WHERE session_code = ?
+
+    ");
+    $stmt->bind_param("s", $session_code);
+    if ($stmt->execute()) {
+        $stmt->bind_result($pk, $game_pk, $username, $token, $balance, $jail_cards);
         if ($stmt->fetch()) {
             return array(
                 "pk" => $pk,
-                "session_id" => $session,
+                "session_code" => $session_code,
+                "game_pk" => $game_pk,
                 "username" => $username,
                 "token" => $token,
                 "balance" => $balance,
@@ -26,17 +66,18 @@ function getPlayerWithSession($conn, $session)
 function getPlayer($conn, $pk)
 {
     $stmt = $conn->prepare("
-        SELECT session_id, username, token, balance, jail_cards
+        SELECT game_pk, session_code, username, token, balance, jail_cards
         FROM players
         WHERE pk = ?
     ");
     $stmt->bind_param("i", $pk);
     if ($stmt->execute()) {
-        $stmt->bind_result($session, $username, $token, $balance, $jail_cards);
+        $stmt->bind_result($game_pk, $session_code, $username, $token, $balance, $jail_cards);
         if ($stmt->fetch()) {
             return array(
                 "pk" => $pk,
-                "session_id" => $session,
+                "game_pk" => $game_pk,
+                "session_code" => $session_code,
                 "username" => $username,
                 "token" => $token,
                 "balance" => $balance,
@@ -44,6 +85,29 @@ function getPlayer($conn, $pk)
             );
         }
     }
+}
+
+function getPlayers($conn)
+{
+    $players = array();
+    $stmt = $conn->prepare("
+        SELECT pk, game_pk, session_code, username, token, balance, jail_cards FROM players
+    ");
+    if ($stmt->execute()) {
+        $stmt->bind_result($pk, $game_pk, $session_code, $username, $token, $balance, $jail_cards);
+        while ($stmt->fetch()) {
+            array_push($players, array(
+                "pk" => $pk,
+                "game_pk" => $game_pk,
+                "session_code" => $session_code,
+                "username" => $username,
+                "token" => $token,
+                "balance" => $balance,
+                "jail_cards" => $jail_cards,
+            ));
+        }
+    }
+    return $players;
 }
 
 function getProperty($conn, $pk)
@@ -99,7 +163,7 @@ function getStreet($conn, $pk)
     ");
     $stmt->bind_param("i", $pk);
     if ($stmt->execute()) {
-        $stmt->bind_result($pk, $name, $color);
+        $stmt->bind_result($name, $color);
         if ($stmt->fetch()) {
             return array(
                 "pk" => $pk,
@@ -110,7 +174,8 @@ function getStreet($conn, $pk)
     }
 }
 
-function getStreets($conn) {
+function getStreets($conn)
+{
     $streets = array();
     $stmt = $conn->prepare("
     SELECT pk, name, color
@@ -134,14 +199,14 @@ function getPlayerProperties($conn, $player_pk)
     $properties = array();
     $stmt = $conn->prepare("
         SELECT pk, property_pk, mortgaged, houses
-        FROM players
+        FROM player_cards
         WHERE player_pk = ?
     ");
     $stmt->bind_param("i", $player_pk);
     if ($stmt->execute()) {
         $stmt->bind_result($pk, $property_pk, $mortgaged, $houses);
         while ($stmt->fetch()) {
-            array_push($players, array(
+            array_push($properties, array(
                 "pk" => $pk,
                 "player_pk" => $player_pk,
                 "property_pk" => $property_pk,
@@ -150,7 +215,7 @@ function getPlayerProperties($conn, $player_pk)
             ));
         }
     }
-    return $players;
+    return $properties;
 }
 
 function changeBalance($conn, $pk, $amount)
@@ -175,13 +240,13 @@ function changeJailCards($conn, $pk, $new_cards)
     return $stmt->execute();
 }
 
-function giveCard($conn, $player_pk, $card_pk)
+function giveCard($conn, $player_pk, $property_pk)
 {
     $stmt = $conn->prepare("
         INSERT INTO player_cards (player_pk, property_pk)
         VALUES (?, ?)
     ");
-    $stmt->bind_param("ii", $player_pk, $card_pk);
+    $stmt->bind_param("ii", $player_pk, $property_pk);
     return $stmt->execute();
 }
 
@@ -215,28 +280,6 @@ function unmortgage($conn, $player_card_pk)
     ");
     $stmt->bind_param("i", $player_card_pk);
     return $stmt->execute();
-}
-
-function getPlayers($conn)
-{
-    $players = array();
-    $stmt = $conn->prepare("
-        SELECT pk, session_id, username, token, balance, jail_cards FROM players
-    ");
-    if ($stmt->execute()) {
-        $stmt->bind_result($pk, $session, $username, $token, $balance, $jail_cards);
-        while ($stmt->fetch()) {
-            array_push($players, array(
-                "pk" => $pk,
-                "session_id" => $session,
-                "username" => $username,
-                "token" => $token,
-                "balance" => $balance,
-                "jail_cards" => $jail_cards,
-            ));
-        }
-    }
-    return $players;
 }
 
 function streetSize($conn, $street_pk)

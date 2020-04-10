@@ -11,7 +11,7 @@ require_once "includes/sql.php"
 <body>
     <h1>Your properties:</h1>
 <?php
-$player = getPlayerWithSession($conn, 1);
+$player = getPlayerWithSession($conn, session_id());
 ?>
     <div id="cards">
     </div>

@@ -3,7 +3,7 @@ include_once "../includes/top.php";
 include_once "../includes/sql.php";
 $pk = $_GET["pk"];
 
-function getCards($conn, $session)
+function getCards($conn, $pk)
 {
     $cards = array();
     $stmt = $conn->prepare("
@@ -12,9 +12,9 @@ function getCards($conn, $session)
         INNER JOIN player_cards ON player_cards.property_pk = properties.pk
         INNER JOIN players ON players.pk = player_cards.player_pk
         INNER JOIN streets ON streets.pk = properties.street_pk
-        WHERE players.session_id = ?
+        WHERE players.pk = ?
     ");
-    $stmt->bind_param("s", $session);
+    $stmt->bind_param("i", $pk);
     if ($stmt->execute()) {
         $stmt->bind_result($pk, $name, $details, $mortgaged, $houses, $street_name, $color);
         while ($stmt->fetch()) {

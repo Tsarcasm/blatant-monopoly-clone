@@ -2,6 +2,10 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . "/monopoly/includes/top.php";
 include_once $_SERVER['DOCUMENT_ROOT'] . "/monopoly/includes/sql.php";
 
+if (!$_SESSION["admin"]) {
+    return "no admin perms";
+}
+
 $name = $_POST["name"];
 $color = $_POST["color"];
 

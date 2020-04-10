@@ -149,7 +149,7 @@ div.bank-table {
     display: grid;
     grid-template-columns: 200px auto auto 100px;
     grid-template-rows: auto 100px 100px 100px 100px 100px 100px auto;
-    grid-template-areas: 'header header header header' 'add-funds main main right' 'take-funds main main right' 'pass-go main main right' 'take-mort cards cards right' 'unmort cards cards right' 'give-prop props props right' 'take-prop props props right' 'menu footer footer footer';
+    grid-template-areas: 'header header header header' 'add-funds main main right' 'take-funds main main right' 'pass-go main main right' 'take-mort cards cards right' 'unmort cards cards right' 'give-prop cards cards right' 'take-prop cards cards right' 'menu footer footer footer';
     grid-gap: 10px;
     /* background-color: #fd7373; */
     padding: 10px;

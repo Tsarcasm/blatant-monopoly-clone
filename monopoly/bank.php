@@ -1,6 +1,13 @@
 <?php
 include_once "includes/top.php";
-include_once "includes/sql.php"
+include_once "includes/sql.php";
+
+
+if (!$_SESSION["admin"]) {
+    echo "You are not a game admin";
+    return;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,10 +91,6 @@ include_once "includes/sql.php"
             <button id="take-prop-btn" class="requires-selected-player">Take</button>
 
         </div>
-
-        <div class="props">
-            Cards
-        </div>
     </div>
 
 
@@ -151,11 +154,11 @@ include_once "includes/sql.php"
                 success: function(e) {
                     console.log(e);
                     closePropertyModal();
-                    delselectPlayer();
+                    // delselectPlayer();
+                    $('#selected-player-cards').load('dynamic/cards.php?pk=' + selectedPlayer.data("pk"));
                 }});
             } else if (propertySelectMode == "take-prop") {
-
-            } //We want to give this player that property
+                //We want to take that property
                 $.ajax({
                 type: "POST",
                 url: "api/take_property.php",
@@ -165,28 +168,12 @@ include_once "includes/sql.php"
                 },
                 success: function(e) {
                     console.log(e);
-                    closePropertyModal();
-                    delselectPlayer();
+                    closePropertyModal();  
+                    // delselectPlayer();          
+                    $('#selected-player-cards').load('dynamic/cards.php?pk=' + selectedPlayer.data("pk"));
                 }});
+            } 
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         function reload() {
