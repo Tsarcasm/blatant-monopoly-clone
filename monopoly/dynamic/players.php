@@ -2,7 +2,8 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . "/monopoly/includes/top.php";
 include_once $_SERVER['DOCUMENT_ROOT'] . "/monopoly/includes/sql.php";
 
-$players = getPlayers($conn);
+$game_pk = $_GET["game_pk"];
+$players = getPlayers($conn, $game_pk);
 
 foreach ($players as $player) {
     echo "<div class='player' data-pk='" . $player["pk"] . "'>";

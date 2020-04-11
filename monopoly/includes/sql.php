@@ -12,6 +12,27 @@ function isAdminPlayer($conn, $player)
     return ($admin_pk == $player["pk"]);
 }
 
+function setGameAdmin($conn, $game_code, $player_pk) {
+    $stmt = $conn->prepare("
+        UPDATE games
+        SET admin_pk = ?
+        WHERE code = ?
+    ");
+    $stmt->bind_param("is", $player_pk, $game_code);
+    return $stmt->execute();
+}
+
+function createGame($conn, $game_code) {
+    $stmt = $conn->prepare("
+        INSERT INTO games
+        (code)
+        VALUES
+        (?)
+    ");
+    $stmt->bind_param("s", $game_code);
+    return $stmt->execute();
+}
+
 function getGameForPlayer($conn, $player_pk)
 {
     $player = getPlayer($conn, $player_pk);
@@ -33,6 +54,25 @@ function getGame($conn, $game_pk)
                 "pk" => $game_pk,
                 "admin_pk" => $admin_pk,
                 "code" => $code,
+            );
+        }
+    }
+}
+
+function getGameWithCode($conn, $game_code) {
+    $stmt = $conn->prepare("
+            SELECT pk, admin_pk
+            FROM games
+            WHERE code = ?
+    ");
+    $stmt->bind_param("s", $game_code);
+    if ($stmt->execute()) {
+        $stmt->bind_result($pk, $admin_pk);
+        if ($stmt->fetch()) {
+            return array(
+                "pk" => $pk,
+                "admin_pk" => $admin_pk,
+                "code" => $game_code,
             );
         }
     }
@@ -63,6 +103,17 @@ function getPlayerWithSession($conn, $session_code)
     }
 }
 
+function createPlayer($conn, $game_pk, $session_code, $username, $token) {
+    $stmt = $conn->prepare("
+        INSERT INTO players
+        (game_pk, session_code, username, token)
+        VALUES
+        (?,?,?,?)
+    ");
+    $stmt->bind_param("isss", $game_pk, $session_code, $username, $token);
+    return $stmt->execute();
+}
+
 function getPlayer($conn, $pk)
 {
     $stmt = $conn->prepare("
@@ -87,12 +138,15 @@ function getPlayer($conn, $pk)
     }
 }
 
-function getPlayers($conn)
+function getPlayers($conn, $game_pk)
 {
     $players = array();
     $stmt = $conn->prepare("
-        SELECT pk, game_pk, session_code, username, token, balance, jail_cards FROM players
+        SELECT pk, game_pk, session_code, username, token, balance, jail_cards 
+        FROM players
+        WHERE game_pk = ?
     ");
+    $stmt->bind_param("i", $game_pk);
     if ($stmt->execute()) {
         $stmt->bind_result($pk, $game_pk, $session_code, $username, $token, $balance, $jail_cards);
         while ($stmt->fetch()) {

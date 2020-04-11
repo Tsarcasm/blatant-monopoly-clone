@@ -1,12 +1,12 @@
 body {
     /* font-family: "Comic Sans MS", cursive, sans-serif; */
     font-family: 'Courier New', Courier, monospace;
-    cursor: url('images/cursor.png'), auto !important;
     /* background-image: url("images/toast.png"); */
     background-repeat: repeat;
 }
 
-body::after {
+
+/* body::after {
     content: "";
     background: url('images/toast.png');
     background-repeat: repeat;
@@ -17,7 +17,7 @@ body::after {
     right: 0;
     position: absolute;
     z-index: -1;
-}
+} */
 
 @media only screen and (max-width: 1200px) {
     body {
@@ -25,14 +25,14 @@ body::after {
     }
 }
 
-a {
-    cursor: url('images/cursor-burn.png'), auto !important;
-}
-
 @media only screen and (min-width: 1200px) {
     .page-wrap {
         width: 1150px;
     }
+}
+
+hr {
+    border: 1px black solid;
 }
 
 .page-wrap {
@@ -147,7 +147,7 @@ td {
 
 div.bank-table {
     display: grid;
-    grid-template-columns: 200px auto auto 100px;
+    grid-template-columns: 200px auto auto 250px;
     grid-template-rows: auto 100px 100px 100px 100px 100px 100px auto;
     grid-template-areas: 'header header header header' 'add-funds main main right' 'take-funds main main right' 'pass-go main main right' 'take-mort cards cards right' 'unmort cards cards right' 'give-prop cards cards right' 'take-prop cards cards right' 'menu footer footer footer';
     grid-gap: 10px;
@@ -326,4 +326,76 @@ div.property-modal-card>h2 {
 
 div.property-modal-card>h2:hover {
     text-decoration: underline;
+}
+
+
+/* Login Panel */
+
+div.login-panel {
+    margin: 0px auto;
+    max-width: 800px;
+    text-align: center;
+}
+
+div.login-panel>form {
+    margin: 0px auto;
+    border: none;
+}
+
+div.login-panel>form>table {
+    border: none;
+    display: inline-table;
+}
+
+div.login-panel>form>table th {
+    border: none;
+}
+
+div.login-panel>form>table td {
+    border: none;
+    width: 110px;
+}
+
+button.btn-1 {
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+    border: none;
+    cursor: pointer;
+    padding: 15px 70px;
+    display: inline-block;
+    margin: 15px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    position: relative;
+    outline: none;
+    border-radius: 5px;
+}
+
+button.btn-1.logout {
+    background: #ff2f2f;
+    color: #fff;
+    box-shadow: 0 6px #9c1c1c;
+}
+
+button.btn-1.login {
+    background: #64B5F6;
+    color: #fff;
+    box-shadow: 0 6px #287ec3;
+}
+
+button.btn-1.login.disabled {
+    background: #b5cfe4;
+    box-shadow: 0 6px #88a2b8;
+}
+
+button.btn-1:not(.disabled):hover {
+    top: 3px;
+    box-shadow: 0 3px #287ec3;
+}
+
+button.btn-1.logout:not(.disabled):hover {
+    top: 3px;
+    box-shadow: 0 3px #9c1c1c;
 }

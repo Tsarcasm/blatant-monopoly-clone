@@ -8,6 +8,8 @@ if (!$_SESSION["admin"]) {
     return;
 }
 
+$player = getPlayerWithSession($conn, session_id());
+$game = getGame($conn, $player["game_pk"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,12 +36,11 @@ if (!$_SESSION["admin"]) {
         </div>
 
         <div class="main">
-        <h2>Players <small>(click to select)</small></h2>
-        <div id="players">
+            <h2>Players <small>(click to select)</small></h2>
+            <div id="players">
         </div>
         </div>
-        <div class="right">
-        <h2>Right</h2>
+        <div id="game-details" class="right">
         </div>
 
         <div class="cards">
@@ -100,7 +101,8 @@ if (!$_SESSION["admin"]) {
         let propertySelectMode;
         $(".requires-selected-player").prop('disabled', true);
         $(".requires-selected-card").prop('disabled', true);
-        $('#players').load('dynamic/players.php?');
+        $('#players').load('dynamic/players.php?game_pk='+ <?=$game["pk"]?> );
+        $('#game-details').load('dynamic/game.php?pk='+ <?=$game["pk"]?> );
 
         $(document).keyup(function(e) {
             if(e.key === "Escape") {
@@ -111,6 +113,7 @@ if (!$_SESSION["admin"]) {
                 }
             }
         });
+
 
 
         $("#give-prop-btn").on("click", function() {
@@ -177,7 +180,7 @@ if (!$_SESSION["admin"]) {
 
 
         function reload() {
-            $('#players').load('dynamic/players.php');
+            $('#players').load('dynamic/players.php?game_pk='+ <?=$game["pk"]?> );
             delselectPlayer();
         }
         function delselectPlayer() {
