@@ -34,11 +34,11 @@ if (!createPlayer($conn, $game["pk"], session_id(), $username, $token)) {
 $player = getPlayerWithSession($conn, session_id());
 
 // Set this player as the admin
-var_dump($player);
 echo "<br>";
 setGameAdmin($conn, $code, $player["pk"]);
+header("Location: " . "/monopoly/bank.php");
 
-var_dump(getGameWithCode($conn, $code));
+
 
 
 
