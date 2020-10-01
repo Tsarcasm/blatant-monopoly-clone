@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Moonitoring!
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="page-wrap">
+        <div class="page">
+            <div class="title">
+                <h1>Moonitoring!</h1>
+            </div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">Status</a>
+                <a href="#">Control Panel</a>
+            </nav>
+            <div class="content">
+                <div class="panel">
+                    <h1>Quick Status</h1>
+                    <div class="quick-status-panel">
+                        <p class="overview">
+                            <!-- <span class="quick-status-good">
+                                <img src="images/tick.png" alt="good" class="icon"> 
+                                All good - no problems!
+                            </span> -->
+                            <span class="quick-status-error">
+                                <img src="images/error.png" alt="error" class="icon">
+                                2 machines not responding
+                            </span>
+                            <br>
+                            <span class="quick-status-warn">
+                                <img src="images/warn.png" alt="warn" class="icon">
+                                5 running low
+                            </span>
+                        </p>
+                        <p class="num-connected">
+                            20 machines connected
+                            <br> 3 farm sites online
+                        </p>
+                        <p class="more">
+                            <a href="#">more info...</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="panel">
+                    <h1>Farm Sites</h1>
+                    <ul class="farm-list">
+                        <li>
+                            <span class="dot" style="background-color: #4CAF50;"></span>
+                            <span class="name">Mill Farm</span>
+                            <span class="num-connected">10 Machines</span>
+                            <span class="resize">▼</span>
+                        </li>
+                        <li>
+                            <span class="dot" style="background-color: #f44336;"></span>
+                            <span class="name">Low Farm</span>
+                            <span class="num-connected">2 Machines</span>
+                            <span class="resize">▼</span>
+                        </li>
+                        <li>
+                            <span class="dot" style="background-color: #FF9800;"></span>
+                            <span class="name">Scoones Farm</span>
+                            <span class="num-connected">8 Machines</span>
+                            <span class="resize">▼</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer" style="font-family: courier new">
+                    <p>cl 2020</p>
+                </div>
+            </div>
+        </div>
+</body>
+<!-- <script src="{% static 'moonitoring/scripts/main.js' %}"></script> -->
+<script>
+    // Submit post on submit
+$('ul.farm-list li').on('click', function(event) {
+    event.preventDefault();
+    console.log("form submitted!") // sanity check
+    alert("you clicked da button");
+});
+
+
+</script>
+</html>
