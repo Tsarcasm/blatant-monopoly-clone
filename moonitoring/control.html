@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Moonitoring!
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @media screen and (min-width: 1000px) {
+            .page-wrap {
+                width: 90%;
+                margin: 0px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrap">
+        <div class="page">
+            <div class="title">
+                <h1>Moonitoring!</h1>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="status.html">Status</a>
+                <a href="control.html" class="selected">Control Panel</a>
+            </nav>
+            <div class="content control-panel">
+                <ul class="panel farm-select">
+                    <li>
+                        <a href="#" class="active">Low Farm</a>
+                    </li>
+                    <li>
+                        <a href="#">Mill Farm</a>
+                    </li>
+                    <li>
+                        <a href="#">Scoones Farm</a>
+                    </li>
+                    <li>
+                        <a href="#">...</a>
+                    </li>
+                </ul>
+                <div class="panel farm-info">
+                    <h1>Farm Info</h1>
+                    <iframe width='100%' height='250px' id='mapcanvas' 
+                    src='https://maps.google.com/maps?q=London,%20United%20Kingdom&Roadmap&z=10&ie=UTF8&iwloc=&output=embed' 
+                    frameborder='0' scrolling='no' marginheight='0' marginwidth='0'>
+                    </iframe>
+                    <p>Do things</p>
+                </div>
+
+                <div class="panel machine-info">
+                    <h1>Machine List</h1>
+                    <ul class="expand-list status">
+                        <li>
+                            <span class="dot" style="background-color: #4CAF50;"></span>
+                            <!-- <img src="images/tick.png" alt="good" class="icon">  -->
+                            <span class="info">Machine 1</span>
+                            <span class="resize">▼</span>
+                            <div class="expanded-box">
+                                <p></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="dot" style="background-color: #4CAF50;"></span>
+                            <!-- <img src="images/tick.png" alt="good" class="icon">  -->
+                            <span class="info">Machine 2</span>
+                            <span class="resize">▼</span>
+                            <div class="expanded-box">
+                                <p></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="dot" style="background-color: #4CAF50;"></span>
+                            <!-- <img src="images/tick.png" alt="good" class="icon">  -->
+                            <span class="info">Machine 3</span>
+                            <span class="resize">▼</span>
+                            <div class="expanded-box">
+                                <p></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="dot" style="background-color: #FF9800;"></span>
+                            <!-- <img src="images/tick.png" alt="good" class="icon">  -->
+                            <span class="info">Machine 4</span>
+                            <span class="resize">▼</span>
+                            <div class="expanded-box">
+                                <p></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="dot" style="background-color: #4CAF50;"></span>
+                            <!-- <img src="images/tick.png" alt="good" class="icon">  -->
+                            <span class="info">Machine 5</span>
+                            <span class="resize">▼</span>
+                            <div class="expanded-box">
+                                <p></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="dot" style="background-color: #4CAF50;"></span>
+                            <!-- <img src="images/tick.png" alt="good" class="icon">  -->
+                            <span class="info">Machine 6</span>
+                            <span class="resize">▼</span>
+                            <div class="expanded-box">
+                                <p></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="dot" style="background-color: #f44336;"></span>
+                            <!-- <img src="images/tick.png" alt="good" class="icon">  -->
+                            <span class="info">Machine 7</span>
+                            <span class="resize">▼</span>
+                            <div class="expanded-box">
+                                <p></p>
+                            </div>
+                        </li>
+                        <p style="margin-left: 10px;">
+                            0 machines need attention
+                        </p>
+                        <hr>
+                        <p>
+                            Last contact: 28 seconds ago
+                            <a href="#" style="float: right;">more...</a>
+                        </p>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="footer" style="font-family: courier new">
+                <p>cl 2020</p>
+            </div>
+        </div>
+</body>
+<!-- <script src="{% static 'moonitoring/scripts/main.js' %}"></script> -->
+<script>
+    // Submit post on submit
+    $('ul.farm-list li').on('click', function (event) {
+        event.preventDefault();
+        console.log("form submitted!") // sanity check
+        alert("you clicked da button");
+    });
+
+
+</script>
+
+</html>
