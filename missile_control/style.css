@@ -1,0 +1,25 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url("images/hazard.jpg");
+    background-repeat: repeat-x;
+    background-size: 2000px 1500px;
+}
+
+div.page-wrap {
+    width: 1000px;
+    margin: 0px auto;
+}
+
+div.content {
+    box-shadow: 2px 2px 5px 1px #0000001f;
+    background-color: #f1f94288;
+    padding: 0px 12px 12px 12px;
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    border: 1px black solid;
+}

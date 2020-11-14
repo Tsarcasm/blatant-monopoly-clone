@@ -1,4 +1,4 @@
-<?php include "includes/top.php";?>
+<!-- <?php //include "includes/top.php";?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <?php include "includes/body-top.php"?>
+    <?php // include "includes/body-top.php"?>
     <div class="content">
         <h1>Home Page</h1>
         <p>This is a project to print images on toast.</p>
@@ -22,9 +22,20 @@
         </p>
         <img src="images/Untitled.jpg" alt="breeed">
     </div>
-    <?php include "includes/body-bottom.php"?>
+    <?php //include "includes/body-bottom.php"?>
 
 </body>
 
 </html>
-<?php include "includes/bottom.php";?>
+<?php // include "includes/bottom.php";?> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>window.location.replace("https://youtu.be/gkTb9GP9lVI?t=26");</script>
+</body>
+</html>
