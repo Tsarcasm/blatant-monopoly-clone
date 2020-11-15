@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>
-        Moonitoring!
-    </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<?php include "includes/start.php"?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
         integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg=="
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style.css">
     <style>
         @media screen and (min-width: 1000px) {
             .page-wrap {
@@ -43,22 +31,18 @@
             }
         }
     </style>
-</head>
+<?php include "includes/top.php"?>
 
-<body>
-    <div id="modal" class="modal">
-        <div class="modal-content panel">
-            <h1>Machine Actions <span id="close-modal-btn" class="close-modal-btn">×</span></h1>
-            Machine: 1</code>
-            <hr>
-            <div id="property-options">
-                Loading...
+        <div id="modal" class="modal">
+            <div class="modal-content panel">
+                <h1>Machine Actions <span id="close-modal-btn" class="close-modal-btn">×</span></h1>
+                Machine: 1</code>
+                <hr>
+                <div id="property-options">
+                    Loading...
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="page-wrap">
-        <div class="page">
             <div class="title">
                 <h1>Moonitoring!</h1>
             </div>
@@ -203,19 +187,8 @@
                 </div>
 
             </div>
-        </div>
-        <div class="footer" style="font-family: courier new">
-            <p>cl 2020</p>
-        </div>
-</body>
-<!-- <script src="{% static 'moonitoring/scripts/main.js' %}"></script> -->
+<?php include "includes/bottom.php"?>
 <script>
-    // Submit post on submit
-    // $('ul.farm-list li').on('click', function (event) {
-    //     event.preventDefault();
-    //     console.log("form submitted!") // sanity check
-    //     alert("you clicked da button");
-    // });
 
     $(".machine-options-btn").on("click", function(event) {
         propertySelectMode = "take-prop";
@@ -231,5 +204,4 @@
 
 
 </script>
-
-</html>
+<?php include "includes/end.php"?>

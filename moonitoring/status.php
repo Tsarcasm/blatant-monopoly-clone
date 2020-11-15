@@ -1,3 +1,4 @@
+<?php include "includes/start.php" ?>
 <?php include "includes/top.php"?>
 <div class="title">
     <h1>Moonitoring!</h1>
