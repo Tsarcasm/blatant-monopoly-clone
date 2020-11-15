@@ -7,7 +7,8 @@ abstract class Entity
     public $pk;
 
     // Instantiate an entity from an array
-    protected static function objFromRow($row) {
+    protected static function objFromRow($row)
+    {
         $class_name = get_called_class();
         $obj = new $class_name();
         foreach ($row as $key => $value) {
@@ -17,16 +18,17 @@ abstract class Entity
     }
 
     // Return an array of all properties and values of an entity
-    protected static function objToRow($obj) {
-        $fields = get_class_vars(get_called_class());
+    protected static function objToRow($obj)
+    {
+        $fields = get_object_vars($obj);
         $arr = [];
         foreach ($fields as $name => $value) {
-            array_push($arr, $value);
+            array_push($arr, $obj->$name);
         }
         return $arr;
     }
 
-    // Generate an sql select string 
+    // Generate an sql select string
     private static function selectStr()
     {
         $class_name = get_called_class();
@@ -54,6 +56,42 @@ abstract class Entity
         }
         $str = rtrim($str, ',');
         return $str;
+    }
+
+    // Generate an insert or update string
+    private static function insertStr()
+    {
+        /*
+        INSERT INTO base (...) VALUES (?,?...")
+        ON DUPLICATE KEY UPDATE
+        name = VALUES (name),
+        h_id = VALUES (h_id)...
+         */
+        $class_name = get_called_class();
+        $table_name = strtolower($class_name);
+        $fields = get_class_vars(get_called_class());
+        $str = "INSERT INTO " . $table_name . " (";
+        foreach ($fields as $name => $value) {
+            $str = $str . $name . ",";
+        }
+        $str = rtrim($str, ',') . ") VALUES (";
+        foreach ($fields as $name => $value) {
+            $str = $str . "?,";
+        }
+        $str = rtrim($str, ',') . ") ";
+        $str = $str . "ON DUPLICATE KEY UPDATE ";
+        foreach ($fields as $name => $value) {
+            $str = $str . " $name = VALUES ( $name ),";
+        }
+        return rtrim($str, ',');
+    }
+
+    private static function deleteStr()
+    {
+        // DELETE FROM table_name WHERE condition;
+        $class_name = get_called_class();
+        $table_name = strtolower($class_name);
+        return "DELETE FROM $table_name ";
     }
 
     public static function getWhere($condition, $variables)
@@ -88,18 +126,7 @@ abstract class Entity
     }
     public static function getAll()
     {
-        $pdo = Database::getConnection();
-        $sql = static::selectStr();
-        echo $sql;
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $entities = array();
-
-        while ($row = $stmt->fetch()) {
-            $obj = static::objFromRow($row);
-            array_push($entities, $obj);
-        }
-        return $entities;
+        return static::getAllWhere("1=1", []);
     }
 
     public static function updateWhere($entity, $condition, $variables)
@@ -109,11 +136,33 @@ abstract class Entity
         return $pdo->prepare($sql)->execute(array_merge(static::objToRow($entity), $variables));
     }
 
-    public function save()
+    public static function insertOrUpdate($entity)
     {
-        static::updateWhere($this, "pk = ?", [$this->pk]);
+        $pdo = Database::getConnection();
+        $sql = static::insertStr();
+        $pdo->prepare($sql)->execute(static::objToRow($entity));
     }
 
-    
-    
+    public static function deleteWhere($condition, $variables)
+    {
+        $pdo = Database::getConnection();
+        $sql = static::deleteStr() . " WHERE " . $condition;
+        return $pdo->prepare($sql)->execute($variables);
+    }
+
+    public function save()
+    {
+        static::insertOrUpdate($this);
+    }
+
+    public function delete()
+    {
+        if (static::deleteWhere("pk = ?", [$this->pk])) {
+            foreach ($this as $key => $value) {
+                $this->$key = null; //set to null
+            }
+        }
+
+    }
+
 }

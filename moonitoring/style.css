@@ -14,6 +14,13 @@ hr {
     border: 1px #dfdeff solid;
 }
 
+code {
+    background: #ffff8a87;
+    font-size: 14px;
+    border: 1px #6d6947 dotted;
+    padding: 0px 6px;
+}
+
 .highlight {
     color: #1200ff;
 }
