@@ -1,6 +1,6 @@
 <?php
 require_once "entity.php";
-require_once "units.php";
+require_once "data.php";
 class Base extends Entity
 {
     public $h_id;
@@ -35,8 +35,8 @@ class Machine extends Entity
     public $name;
     public $last_contact;
 
-    public function getSensors()
+    public function getSources()
     {
-        return Machine_Sensor::getAllWhere("machine_pk = ?", [$this->pk]);
+        return Machine_Source::getAllWhere("machine_pk = ?", [$this->pk]);
     }
 }

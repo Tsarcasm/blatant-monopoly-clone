@@ -1,0 +1,26 @@
+<html>
+<head>
+<style>
+#myBtn
+{
+position:absolute;
+}
+</style>
+<script>
+function myFunction()
+{
+document.getElementById("myBtn").style.top=Math.floor((Math.random()*500)+100);
+document.getElementById("myBtn").style.left=Math.floor((Math.random()*1000)+100);
+}
+</script>
+</head>
+<body>
+
+<h1>Man, can't believe you 404'd it. You are crazy. Certainly is NOT my fault</h1>
+<p>Try going back home.</p>
+<button type="button" id="myBtn" onclick="myFunction()">Return to Civilisation (the page you came from)</button>
+
+
+
+</body>
+</html>

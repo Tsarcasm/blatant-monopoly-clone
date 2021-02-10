@@ -9,8 +9,10 @@ abstract class Entity
     // Instantiate an entity from an array
     protected static function objFromRow($row)
     {
+        if ($row == false) return null;
         $class_name = get_called_class();
         $obj = new $class_name();
+        
         foreach ($row as $key => $value) {
             $obj->$key = $value;
         }
@@ -109,6 +111,21 @@ abstract class Entity
     {
         return static::getWhere("pk = ?", [$pk]);
     }
+
+    public static function getAllQuery($query, $variables) {
+        $pdo = Database::getConnection();
+        $sql = static::selectStr() . " " . $query;
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($variables);
+        $entities = array();
+        while ($row = $stmt->fetch()) {
+            $obj = static::objFromRow($row);
+            array_push($entities, $obj);
+        }
+
+        return $entities;
+    }
+
 
     public static function getAllWhere($condition, $variables)
     {

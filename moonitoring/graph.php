@@ -1,196 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style type="text/css">
-  #container {
-    max-width: 400px;
-    height: 400px;
-    margin: auto;
-  }
-</style>
-</head>
-<body>
-
-<?php include "includes/sigmajs.inc" ?>
-
-<div id="container">
-  <style>
-    #graph-container {
-      width: 600px;
-    height: 600px;
-    margin: 0px auto;
-    border: 1px black solid;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style type="text/css">
+    #container {
+      max-width: 400px;
+      height: 400px;
+      margin: auto;
     }
   </style>
-  <div id="graph-container"></div>
-</div>
-<script>
-/**
- * This example shows the available edge label renderers for the canvas
- * renderer.
- */
-var i,
-    s,
-    N = 5,
-    E = 12,
-    g = {
-      nodes: [],
-      edges: []
-    };
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+  <div id="chart" style="width: 600px; height:200px; border:2px black solid;"></div>
+  <script>
+
+    function randomWalk(steps) {
+      steps = steps >>> 0 || 100;
+      var points = [],
+        value = 21,
+        t;
+
+      for (t = 0; t < steps; t += 1) {
+        value = 25 + Math.round(Math.random() * 10 - 5)
+        points.push([t, value]);
+      }
+
+      return points;
+    }
 
 
-g.nodes.push({
-    id: "b1",
-    label: "Base",
-    x: Math.random(),
-    y: Math.random(),
-    size: 4,
-    color: '#666'
-});
+    let data = []
+    let categories = []
 
-g.nodes.push({
-    id: "f1",
-    label: "Farm",
-    x: Math.random(),
-    y: Math.random(),
-    size: 2,
-    color: '#666'
-});
-g.nodes.push({
-    id: "f2",
-    label: "Farm",
-    x: Math.random(),
-    y: Math.random(),
-    size: 2,
-    color: '#666'
-});
-
-  g.edges.push({
-    id: 'e1',
-    source: 'f1',
-    target: 'b1',
-    size: 6,
-    color: '#ccc',
-    type: 'arrow'
-  });
-  g.edges.push({
-    id: 'e2',
-    source: 'f2',
-    target: 'b1',
-    size: 6,
-    color: '#ccc',
-    type: 'arrow'
-  });
+    for (let i = 0; i < 25; i++) {
+      // data.push(Math.floor(Math.random() * 30) + 5)
+      categories.push(i)
+    }
 
 
+    function makeGraphOptions(data, timestamps) {
+      var options = {
+        series: [{
+          name: "Temperature",
+          data: randomWalk(25)
+        }],
+        chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          },
+          animations: {
+            enabled: false,
+            easing: 'easeinout',
+            speed: 100000,
+            animateGradually: {
+              enabled: false,
+              delay: 10
+            },
+            dynamicAnimation: {
+              enabled: false,
+              speed: 350000
+            }
+          }
+        },
+        dataLabels: {
+          enabled: false,
+          style: {
+            fontSize: '11px',
+            fontWeight: 'bold',
+            colors: undefined,
+          },
+          background: {
+            enabled: true,
+          }
+        },
+        stroke: {
+          width: 3,
+          curve: 'straight',
+          dashArray: [0]
+        },
+        title: {
+          text: 'Outside Temperature',
+          align: 'left'
+        },
+        legend: {
+          tooltipHoverFormatter: function (val, opts) {
+            return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
+          }
+        },
+        markers: {
+          size: 0,
+          hover: {
+            sizeOffset: 2
+          }
+        },
+        xaxis: {
+          categories: timestamps
+        },
+        tooltip: {
+          y: [
+            {
+              title: {
+                formatter: function (val) {
+                  return val + " °C"
+                }
+              }
+            }
+          ]
+        },
+        annotations: {
+          yaxis: [
+            {
+              y: 21,
+              y2: 30,
+              borderColor: '#000',
+              fillColor: '#75ff7a',
+              label: {
+                text: 'Allowed'
+              }
+            }
+          ]
+        },
+        grid: {
+          borderColor: '#f1f1f1',
+        },
+
+      };
+      return options;
+    }
+    var chart = new ApexCharts(document.querySelector("#chart"), makeGraphOptions(data, categories));
+    chart.render();
 
 
-// Generate a random graph:
-for (i = 0; i < 40; i++) {
-g.nodes.push({
-    id: "m"+i,
-    label: "Machine",
-    x: Math.random(),
-    y: Math.random(),
-    size:  0.8,
-    color: '#666'
-});
-g.edges.push({
-    id: 'e2'+i,
-    source: "m"+i,
-    target: 'f1',
-    size: 6,
-    color: '#ccc',
-    type: 'arrow'
-  });
-}
 
-// Generate a random graph:
-for (i = 0; i < 5; i++) {
-g.nodes.push({
-    id: "m210"+i,
-    label: "Machine",
-    x: Math.random(),
-    y: Math.random(),
-    size:  0.8,
-    color: '#666'
-});
-g.edges.push({
-    id: 'e403'+i,
-    source: "m210"+i,
-    target: 'f2',
-    size: 60,
-    color: '#ccc',
-    type: 'arrow'
-  });
-}
+  </script>
 
 
-// Instantiate sigma:
-s = new sigma({
-  graph: g,
-  renderer: {
-    container: document.getElementById('graph-container'),
-    type: 'canvas'
-  },
-  settings: {
-    edgeLabelSize: 'proportional'
-  }
-});
-// Add a method to the graph model that returns an
-  // object with every neighbors of a node inside:
-  sigma.classes.graph.addMethod('neighbors', function(nodeId) {
-    var k,
-        neighbors = {},
-        index = this.allNeighborsIndex[nodeId] || {};
-
-    for (k in index)
-      neighbors[k] = this.nodesIndex[k];
-
-    return neighbors;
-  });
-s.bind('clickNode', function(e) {
-        var nodeId = e.data.node.id,
-            toKeep = s.graph.neighbors(nodeId);
-        toKeep[nodeId] = e.data.node;
-
-        s.graph.nodes().forEach(function(n) {
-          if (toKeep[n.id])
-            n.color = n.originalColor;
-          else
-            n.color = '#eee';
-        });
-
-        s.graph.edges().forEach(function(e) {
-          if (toKeep[e.source] && toKeep[e.target])
-            e.color = e.originalColor;
-          else
-            e.color = '#eee';
-        });
-
-        // Since the data has been modified, we need to
-        // call the refresh method to make the colors
-        // update effective.
-        s.refresh();
-      });
-//Start the ForceAtlas2 algorithm:
-// s.startForceAtlas2({worker: true, barnesHutOptimize: false});//Start the ForceAtlas2 algorithm to optimize network layout
-
-	s.startForceAtlas2({worker: false, barnesHutOptimize: false, slowDown: 1000, iterationsPerRender: 1000});
-	
-	//Set time interval to allow layout algorithm to converge on a good state
-	var t = 0;
-	var interval = setInterval(function() {
-		t += 1;
-		if (t >= 5) {
-			clearInterval(interval);
-			s.stopForceAtlas2();
-		}
-	}, 100);
-</script>
 
 </body>
+
 </html>

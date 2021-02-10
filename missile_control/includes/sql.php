@@ -1,6 +1,6 @@
 <?php
 
-function getSilos($c1n)
+function getSilos($conn)
 {
     $silos = array();
     $stmt = $conn->prepare("

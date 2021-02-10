@@ -32,6 +32,14 @@ code {
     -ms-transform: rotate(180deg);
 }
 
+.force-pointer {
+    cursor: pointer !important;
+}
+
+.force-no-pointer {
+    cursor: default !important;
+}
+
 @media screen and (min-width: 1000px) {
     .page-wrap {
         width: 1000px;
@@ -125,6 +133,17 @@ nav a:visited {
 }
 
 .panel>h1 {
+    font-size: 20px;
+    font-weight: normal;
+    color: #1200ff;
+}
+
+.panel>h3 {
+    margin: 10px 0px;
+    border-bottom: 1px #8e8e8e solid;
+}
+
+h1.panel-header {
     font-size: 20px;
     font-weight: normal;
     color: #1200ff;
@@ -485,6 +504,142 @@ ul.machine-control-panel-list>li div.data {
     font-weight: bold;
 }
 
+table.control-panel-machine-list tbody {
+    cursor: inherit;
+    padding: inherit;
+}
+
+table.control-panel-machine-list {
+    border-collapse: collapse;
+}
+
+table.control-panel-machine-list td {
+    padding: inherit;
+}
+
+table.control-panel-machine-list tr {
+    cursor: inherit;
+    padding: inherit;
+}
+
+table.control-panel-machine-list tr:nth-child(2n+3) {
+    background-color: #f5f5f5;
+}
+
+table.control-panel-machine-list.clickable {
+    cursor: pointer;
+}
+
+table.control-panel-machine-list.clickable tr:not(:first-child):hover {
+    background: #c5e5ff;
+}
+
+table.control-panel-machine-list th {
+    text-align: left;
+    border-bottom: 1px solid #8c8c8c !important;
+    /* font-weight: normal; */
+}
+
+table.control-panel-machine-list, table.control-panel-machine-list th, table.control-panel-machine-list td {
+    border-bottom: 1px dotted #8c8c8c;
+}
+
+table.control-panel-machine-list {
+    padding: 3px 2px;
+}
+
+table.compact {
+    padding: 0px 5px;
+}
+
+table.solidcolor tr:nth-child(2n+3) {
+    background-color: inherit;
+}
+
+table.segment-list {
+    border-collapse: collapse;
+}
+table.segment-list th{
+    text-align: left;
+    border-bottom: 1px solid #8c8c8c;
+}
+table.segment-list tr.start {
+    border-top: 1px dotted #8c8c8c;
+}
+table.segment-list tr:last-child {
+    border-bottom: 1px dotted #8c8c8c;
+}
+
+
+/* Tooltips */
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px solid blue;
+    cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: #f7f7f7;
+    /* color: black; */
+    border: 1px black dashed;
+    text-align: center;
+    /* border-radius: 6px; */
+    padding: 3px 10px;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 20px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+/* .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+  } */
+
+/* Slides */
+
+div.slide-top {
+    position: absolute;
+    background: white;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+}
+
+div.slide-container {
+    position: relative;
+}
+
+div.slide-close-btn {
+    background: #fff255;
+    cursor: pointer;
+}
+
+div.slide-inner {
+    padding: 3px 16px;
+    margin-bottom: 16px;
+    overflow-wrap: break-word;
+}
+
+.r2 {
+    right: 200px
+}
+
 /* Forms */
 
 form.centre-form {
@@ -610,4 +765,60 @@ body.modal-body {
 
 .modal .close-modal-btn:hover {
     background: #a10a0a;
+}
+
+.onoffswitch {
+    display: inline-block;
+    position: relative;
+    position: relative;
+    width: 44px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    height: 18px;
+    padding: 0;
+    line-height: 18px;
+    border: 2px solid #E3E3E3;
+    border-radius: 18px;
+    background-color: #FFFFFF;
+    transition: background-color 0.3s ease-in;
+}
+
+.onoffswitch-label:before {
+    content: "";
+    display: block;
+    width: 18px;
+    margin: 0px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 22px;
+    border: 2px solid #E3E3E3;
+    border-radius: 18px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label {
+    background-color: #49E845;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label, .onoffswitch-checkbox:checked+.onoffswitch-label:before {
+    border-color: #49E845;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label:before {
+    right: 0px;
 }

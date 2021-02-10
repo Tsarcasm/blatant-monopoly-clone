@@ -1,0 +1,14 @@
+<?php include '../format/header.php'; ?>
+
+<!--Extras-->
+
+<!--End extras-->
+
+<div id="sidebar">
+<h3></h3>
+<a href='../funTimes.php'>Go back</a>
+</div>
+
+<div id='content'>
+</div>
+<?php include '../format/footer.php'; ?>

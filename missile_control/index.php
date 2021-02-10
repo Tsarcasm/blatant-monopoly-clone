@@ -2,7 +2,7 @@
 require_once "includes/top.php";
 
 
-$silos = getSilos($conn);
+// $silos = getSilos($conn);
 ?>
 
 <!DOCTYPE html>
