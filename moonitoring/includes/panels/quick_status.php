@@ -24,12 +24,13 @@
             </span> -->
         </p>
         <p class="num-connected">
+         <?php $last_contact = $base->getLastContact() ?>
             <?=count($machines)?> machines connected
             <br> <?=count($farms)?> farm sites online
-            <br> Last contact: <?=time_elapsed_string($base->last_contact);?>
+            <br> <span title="<?=$last_contact?>">Last contact: <?=time_elapsed_string($last_contact);?></span>
         </p>
         <p class="more">
-            *<i>We noticed you don't have any machines online</i><br>
+            <!-- *<i>We noticed you don't have any machines online</i><br> -->
             <!-- <a href="status.html"> more info...</a> -->
         </p>
     </div>

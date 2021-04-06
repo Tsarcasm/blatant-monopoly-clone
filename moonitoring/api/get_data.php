@@ -2,6 +2,7 @@
 
 require_once "helper.php";
 require_once "../model/units.php";
+require_once "../model/data.php";
 require_once "../model/interpreter.php";
 
 if (!isset($_GET["machine"])) {

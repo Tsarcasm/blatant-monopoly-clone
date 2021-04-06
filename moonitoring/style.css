@@ -244,7 +244,7 @@ div.quick-status-panel p.num-connected {
 }
 
 div.quick-status-panel p.more {
-    grid-column: col-1;
+    grid-column: col-1 / span 2;
     grid-row: row-2;
 }
 
@@ -383,6 +383,7 @@ ul.farm-select {
     border-top: 1px #909090 solid;
     background-color: #d8d8d8;
     border-bottom: 1px #909090 solid;
+    cursor: default;
 }
 
 ul.farm-select>li {
@@ -412,6 +413,7 @@ ul.farm-select>li a.active {
     font-weight: bold;
     background-color: #ffffff;
     /* border-bottom: 5px #0000ee solid; */
+    cursor: default;
 }
 
 div.content.control-panel {
@@ -559,17 +561,19 @@ table.solidcolor tr:nth-child(2n+3) {
 table.segment-list {
     border-collapse: collapse;
 }
-table.segment-list th{
+
+table.segment-list th {
     text-align: left;
     border-bottom: 1px solid #8c8c8c;
 }
+
 table.segment-list tr.start {
     border-top: 1px dotted #8c8c8c;
 }
+
 table.segment-list tr:last-child {
     border-bottom: 1px dotted #8c8c8c;
 }
-
 
 /* Tooltips */
 
@@ -613,16 +617,18 @@ table.segment-list tr:last-child {
 /* Slides */
 
 div.slide-top {
-    position: absolute;
+    /* position: absolute; */
     background: white;
     top: 0px;
     height: 100%;
     width: 100%;
     left: 0px;
+    padding: 0px;
 }
 
 div.slide-container {
     position: relative;
+    padding: 0px !important;
 }
 
 div.slide-close-btn {
@@ -696,12 +702,45 @@ form.centre-form label.required::after {
     box-shadow: none;
 }
 
-@media all and (max-width:30em) {
+.style-button-2 {
+    display: inline-block;
+    padding: 4px 30px 7px 30px;
+    margin: 5px 0px;
+    /* width: 100%; */
+    border-radius: 6px;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    /* text-transform: uppercase; */
+    font-weight: 400;
+
+    color: #FFFFFF;
+    background-color: #6d98ad;
+    box-shadow: inset 0px -4px 0px 0px rgb(0 0 0 / 18%);
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    border: none;
+}
+
+.style-button-2:not(.success-button):hover {
+    /* top: 4px; */
+    margin-top: 8px;
+    padding-bottom: 4px;
+    box-shadow: inset 0px -2px 0px 0px rgb(0 0 0 / 18%);
+}
+
+a.inline-edit-btn {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* @media all and (max-width:30em) {
     .style-button-1 {
         display: block;
         margin: 0.4em auto;
     }
-}
+} */
 
 .success-button {
     background-color: #4bda51 !important;

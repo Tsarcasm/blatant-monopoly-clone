@@ -13,44 +13,32 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 
 <body>
-  <div id="chart" style="width: 600px; height:200px; border:2px black solid;"></div>
+  <div id="chart" style="width: 100%; height:100%; border:2px black solid;">Loading.... This may take a minute</div>
   <script>
 
-    function randomWalk(steps) {
-      steps = steps >>> 0 || 100;
-      var points = [],
-        value = 21,
-        t;
 
-      for (t = 0; t < steps; t += 1) {
-        value = 25 + Math.round(Math.random() * 10 - 5)
-        points.push([t, value]);
-      }
 
-      return points;
-    }
+
+
 
 
     let data = []
     let categories = []
 
-    for (let i = 0; i < 25; i++) {
-      // data.push(Math.floor(Math.random() * 30) + 5)
-      categories.push(i)
-    }
-
-
     function makeGraphOptions(data, timestamps) {
       var options = {
         series: [{
           name: "Temperature",
-          data: randomWalk(25)
+          data: data
         }],
         chart: {
-          height: 350,
+          height: 600,
+          width: 1500,
           type: 'line',
           zoom: {
             enabled: false
@@ -86,7 +74,7 @@
           dashArray: [0]
         },
         title: {
-          text: 'Outside Temperature',
+          text: 'Water Usage',
           align: 'left'
         },
         legend: {
@@ -101,7 +89,10 @@
           }
         },
         xaxis: {
-          categories: timestamps
+          categories: timestamps,
+          labels: {
+          show: true,
+          }
         },
         tooltip: {
           y: [
@@ -115,17 +106,17 @@
           ]
         },
         annotations: {
-          yaxis: [
-            {
-              y: 21,
-              y2: 30,
-              borderColor: '#000',
-              fillColor: '#75ff7a',
-              label: {
-                text: 'Allowed'
-              }
-            }
-          ]
+          // yaxis: [
+          //   {
+          //     y: 21,
+          //     y2: 30,
+          //     borderColor: '#000',
+          //     fillColor: '#75ff7a',
+          //     label: {
+          //       text: 'Allowed'
+          //     }
+          //   }
+          // ]
         },
         grid: {
           borderColor: '#f1f1f1',
@@ -134,8 +125,35 @@
       };
       return options;
     }
-    var chart = new ApexCharts(document.querySelector("#chart"), makeGraphOptions(data, categories));
-    chart.render();
+
+    <?php
+
+if (!isset($_GET["limit"])) {
+    $limit = 200;
+} else {
+    $limit = $_GET["limit"];
+}
+?>
+    $.ajax({
+                type: "GET",
+                url: "api/datapoints.php?machine=<?=$_GET["machine"]?>&sensor=<?=$_GET["sensor"]?>&limit=<?=$limit?>",
+                // data: form.serialize(), // serializes the form's elements.
+                success: function (data) {
+                  console.log(data);
+                  var json = JSON.parse(data);
+                  var dat = [];
+                  var timestamps = [];
+                  for (let i = json.length - 1; i >= 0; i--) {
+                    timestamps.push(json[i].x);
+                    dat.push(json[i].y);
+                    if (json[i].y < 0) console.log(json[i]);
+                  }
+                  var chart = new ApexCharts(document.querySelector("#chart"), makeGraphOptions(dat, timestamps));
+                  chart.render();
+
+                }
+            });
+
 
 
 

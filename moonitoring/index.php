@@ -8,14 +8,14 @@
     </nav>
     <div class="content">
         <?php include "includes/panels/quick_status.php"?>
-        <div class="panel">
+        <!-- <div class="panel">
             <h1>No Machines?</h1>
             <p>
                 If you have no machines you can order some <a href="#">here</a>. <br>
                 Otherwise, you might be having some issues with connecting the machines. View troubleshooting steps <a href="#">here</a>. <br>
                 <code>Dev option: add a machine to the database <a href="#">here</a></code>
             </p>
-        </div>
+        </div> -->
         <div class="panel">
             <h1>Farm Sites</h1>
             <ul class="expand-list farm">
@@ -29,7 +29,9 @@
                         <span class="resize">▼</span>
                         <div class="expanded-box">
                             <p>
-                                <ul class="machine-status-list">
+                            <a href="control.php">View Info</a>
+                                <!-- <ul class="machine-status-list">
+
                                     <!-- <li>
                                         <span class="machine-id">1</span>
                                         No contact for 20 minutes
@@ -40,7 +42,7 @@
                                         No contact for 58 minutes
                                         <a href="#">Fix...</a>
                                     </li> -->
-                                </ul>
+                                <!-- </ul> -->
                             </p>
                         </div>
                     </li>

@@ -7,7 +7,7 @@ abstract class Entity
     public $pk;
 
     // Instantiate an entity from an array
-    protected static function objFromRow($row)
+    public static function objFromRow($row)
     {
         if ($row == false) return null;
         $class_name = get_called_class();
@@ -20,7 +20,7 @@ abstract class Entity
     }
 
     // Return an array of all properties and values of an entity
-    protected static function objToRow($obj)
+    public static function objToRow($obj)
     {
         $fields = get_object_vars($obj);
         $arr = [];
@@ -158,6 +158,7 @@ abstract class Entity
         $pdo = Database::getConnection();
         $sql = static::insertStr();
         $pdo->prepare($sql)->execute(static::objToRow($entity));
+        return $pdo->lastInsertId();
     }
 
     public static function deleteWhere($condition, $variables)
@@ -169,7 +170,7 @@ abstract class Entity
 
     public function save()
     {
-        static::insertOrUpdate($this);
+        $this->pk = static::insertOrUpdate($this);
     }
 
     public function delete()
